@@ -8,7 +8,6 @@ import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.demo.trade.config.Configs;
 import com.alipay.demo.trade.model.ExtendParams;
-import com.alipay.demo.trade.model.GoodsDetail;
 import com.alipay.demo.trade.model.builder.AlipayTradePrecreateRequestBuilder;
 import com.alipay.demo.trade.model.builder.AlipayTradeQueryRequestBuilder;
 import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
@@ -20,7 +19,7 @@ import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.service.impl.AlipayTradeWithHBServiceImpl;
 import com.alipay.demo.trade.utils.Utils;
 import com.iot.baobiao.jooq.tables.pojos.Baobiaoorder;
-import com.iot.baobiao.service.BaobiaoOrderService;
+import com.iot.baobiao.service.BaobiaoorderService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,11 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -43,6 +40,7 @@ import java.util.*;
  * Created by jia on 2016/9/6.
  */
 @RestController
+@RequestMapping("/pay")
 public class PayController {
 
     public static final int TRADE_SUCCESS = 0;  //交易支付成功
@@ -51,7 +49,7 @@ public class PayController {
     public static final int UNKNOWN_STATE = 3;//未知状态
 
     @Autowired
-    BaobiaoOrderService baobiaoOrderService;
+    BaobiaoorderService baobiaoorderService;
 
 //    @Autowired
 //    ServletContext context;
@@ -198,7 +196,7 @@ public class PayController {
         return false;
     }
 
-    @RequestMapping(value = "/pay/alipay", method = RequestMethod.POST)
+    @RequestMapping(value = "/alipay", method = RequestMethod.POST)
     public Map<String, String> alipay(@RequestParam String amount, HttpSession session) {
 
         int user_id = (Integer) session.getAttribute("user_id");
@@ -281,7 +279,7 @@ public class PayController {
                         LocalDateTime.now(),
                         WAIT_BUYER_PAY,
                         phonenum);
-                baobiaoOrderService.insertOrder(order);
+                baobiaoorderService.insertOrder(order);
 
                 map.put("status", "true");
                 map.put("qrcode", response.getQrCode());
@@ -306,7 +304,7 @@ public class PayController {
         return map;
     }
 
-    @RequestMapping(value = "/pay/notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/notify", method = RequestMethod.POST)
     public String notifyResult(HttpServletRequest request, HttpServletResponse response) {
         log.debug("收到支付宝异步通知！");
         Map<String, String> params = new HashMap<String, String>();
@@ -337,7 +335,7 @@ public class PayController {
             }
 
             //在数据库中查找订单号对应的订单，并将其金额与数据库中的金额对比，若对不上，也为异常通知
-            Baobiaoorder order = baobiaoOrderService.findOrderByOuttradeno(outtradeno);
+            Baobiaoorder order = baobiaoorderService.findOrderByOuttradeno(outtradeno);
             if (order == null) {
                 log.warn(outtradeno + "查无此订单！");
                 return "failed";
@@ -351,16 +349,16 @@ public class PayController {
 
             String status = params.get("trade_status");
             if (status.equals("WAIT_BUYER_PAY")) { //如果状态是正在等待用户付款
-                if (order.getStatus() != WAIT_BUYER_PAY) baobiaoOrderService.modifyTradeStatus(WAIT_BUYER_PAY, outtradeno);
+                if (order.getStatus() != WAIT_BUYER_PAY) baobiaoorderService.modifyTradeStatus(WAIT_BUYER_PAY, outtradeno);
             } else if (status.equals("TRADE_CLOSED")) { //如果状态是未付款交易超时关闭，或支付完成后全额退款
-                if (order.getStatus() != TRADE_CLOSED) baobiaoOrderService.modifyTradeStatus(TRADE_CLOSED, outtradeno);
+                if (order.getStatus() != TRADE_CLOSED) baobiaoorderService.modifyTradeStatus(TRADE_CLOSED, outtradeno);
             } else if (status.equals("TRADE_SUCCESS") || status.equals("TRADE_FINISHED")) { //如果状态是已经支付成功
-                if (order.getStatus() != TRADE_SUCCESS) baobiaoOrderService.modifyTradeStatus(TRADE_SUCCESS, outtradeno);
+                if (order.getStatus() != TRADE_SUCCESS) baobiaoorderService.modifyTradeStatus(TRADE_SUCCESS, outtradeno);
             } else {
-                baobiaoOrderService.modifyTradeStatus(UNKNOWN_STATE, outtradeno);
+                baobiaoorderService.modifyTradeStatus(UNKNOWN_STATE, outtradeno);
             }
             log.info(outtradeno + "订单的状态已经修改为" + status + "。");
-            rabbitTemplate.convertAndSend("pay-success-exchange","pay-success", baobiaoOrderService.findOrderByOuttradeno(outtradeno));
+            rabbitTemplate.convertAndSend("pay-success-exchange","pay-success", baobiaoorderService.findOrderByOuttradeno(outtradeno));
         } else { //如果验证签名没有通过
             return "failed";
         }

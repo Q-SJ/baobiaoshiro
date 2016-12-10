@@ -3,7 +3,7 @@ package com.iot.baobiao.controller;
 import com.iot.baobiao.exception.NoKeywordsException;
 import com.iot.baobiao.jooq.tables.pojos.UserSite;
 import com.iot.baobiao.service.DataService;
-import com.iot.baobiao.service.ManageSiteService;
+import com.iot.baobiao.service.SiteService;
 import com.iot.baobiao.util.DataReturnMap;
 import com.iot.baobiao.util.ErrorReturnMap;
 import com.iot.baobiao.util.OKReturnMap;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -28,7 +27,7 @@ import java.util.*;
 public class SiteController {
 
     @Autowired
-    ManageSiteService manageSiteService;
+    SiteService siteService;
 
     @Autowired
     private DataService dataService;
@@ -53,7 +52,7 @@ public class SiteController {
         args.put("url", url);
         args.put("domain", domain);
         args.put("sitename", sitename);
-        int site_id = manageSiteService.addUserSite(user_id, args);
+        int site_id = siteService.addUserSite(user_id, args);
         return new DataReturnMap("site_id", site_id).getMap();
     }
 
@@ -61,14 +60,14 @@ public class SiteController {
     public Map<String, Object> delete_site(HttpSession session,
                                            @RequestParam int site_id) {
         int user_id = (Integer) session.getAttribute("user_id");
-        manageSiteService.deleteUserSite(user_id, site_id);
+        siteService.deleteUserSite(user_id, site_id);
         return new OKReturnMap("删除网站成功！").getMap();
     }
 
     @RequestMapping("/query")
     public Map<String, Object> query_site(HttpSession session) {
         int user_id = (Integer) session.getAttribute("user_id");
-        List<UserSite> list = manageSiteService.queryUserSite(user_id);
+        List<UserSite> list = siteService.queryUserSite(user_id);
         return new DataReturnMap("sites", list).getMap();
     }
 
@@ -80,7 +79,7 @@ public class SiteController {
                                           @RequestParam(required = false) String fromTime) {
         int user_id = (Integer) session.getAttribute("user_id");
 
-        List<Integer> ids = manageSiteService.queryUserSiteID(user_id);
+        List<Integer> ids = siteService.queryUserSiteID(user_id);
 
         if (words == null) throw new NoKeywordsException();
         List<String> wordList = Arrays.asList(words.split(","));
@@ -94,7 +93,7 @@ public class SiteController {
 
     @RequestMapping("/domains")
     public Map<String, Object> fetchDomainList() {
-        return new DataReturnMap("domains", manageSiteService.queryDomainList()).getMap();
+        return new DataReturnMap("domains", siteService.queryDomainList()).getMap();
     }
 
 }

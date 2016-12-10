@@ -1,8 +1,9 @@
 package com.iot.baobiao.controller;
 
+import com.iot.baobiao.jooq.tables.pojos.Site;
 import com.iot.baobiao.service.DataService;
 import com.iot.baobiao.service.LoginService;
-import com.iot.baobiao.service.ManageSiteService;
+import com.iot.baobiao.service.SiteService;
 import com.iot.baobiao.service.UserService;
 import com.iot.baobiao.util.DataReturnMap;
 import com.iot.baobiao.util.ErrorReturnMap;
@@ -13,10 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.net.MalformedURLException;
@@ -34,7 +32,7 @@ public class AdminController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    ManageSiteService manageSiteService;
+    SiteService siteService;
 
     @Autowired
     UserService userService;
@@ -72,21 +70,31 @@ public class AdminController {
     //以下为网站管理
     @RequestMapping("/sites")
     public Map<String, Object> findAllSites() {
-        return new DataReturnMap("sites", manageSiteService.findAll()).getMap();
+        return new DataReturnMap("sites", siteService.findAll()).getMap();
     }
 
-    @PostMapping("/deleteSiteByUrl")
-    public Map<String, Object> deleteSiteByUrl(@RequestParam String url) {
+    @PostMapping("/siteModify")
+    public Map<String, Object> modifySite(@RequestBody Site site) {
+        siteService.modifySite(site);
+        return new OKReturnMap("修改成功！").getMap();
+    }
+
+    @PostMapping("/siteDelete")
+    public Map<String, Object> deleteSite(@RequestParam(required = false) String url,
+                                               @RequestParam(required = false, defaultValue = "-1") int site_id) {
+        if (url == null && site_id == -1) {
+            return new ErrorReturnMap("输入参数有误！").getMap();
+        }
 
         Subject currentUser = SecurityUtils.getSubject();
-
+        if (site_id != -1) url = siteService.findUrlByID(site_id);
         String message;
         if (!(url.startsWith("http://") || url.startsWith("https://"))) url = "http://" + url;
 
         try {
             URL u = new URL(url);
             String domain = u.getHost();
-            message = manageSiteService.deleteSiteByDomain(domain);
+            message = siteService.deleteSiteByDomain(domain);
         } catch (MalformedURLException e) {
             return new ErrorReturnMap("输入网址的格式错误!").getMap();
         }
@@ -95,11 +103,10 @@ public class AdminController {
         return new OKReturnMap(message).getMap();
     }
 
-
     @PostMapping("/siteFindByName")
     public Map<String, Object> findSiteByProvience(@RequestParam String name) {
 //        if (province == null && name == null) return new ErrorReturnMap("参数错误！");
-        return new DataReturnMap("sites", manageSiteService.findSiteByName(name)).getMap();
+        return new DataReturnMap("sites", siteService.findSiteByName(name)).getMap();
     }
 
     @PostMapping("/siteFindByURL")
@@ -111,7 +118,7 @@ public class AdminController {
         } catch (MalformedURLException e) {
             return new ErrorReturnMap("输入的网址格式错误！").getMap();
         }
-        return new DataReturnMap("site", manageSiteService.findSiteByDomain(domain)).getMap();
+        return new DataReturnMap("site", siteService.findSiteByDomain(domain)).getMap();
     }
 
     @PostMapping("/siteInfo")

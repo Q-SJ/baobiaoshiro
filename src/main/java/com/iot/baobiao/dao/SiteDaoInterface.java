@@ -20,4 +20,8 @@ public interface SiteDaoInterface {
     List<Site> fetchAll();
 
     List<Site> fetchByName(String name);
+
+    String fetchUrlByID(int site_id);
+
+    void update(Site site);
 }

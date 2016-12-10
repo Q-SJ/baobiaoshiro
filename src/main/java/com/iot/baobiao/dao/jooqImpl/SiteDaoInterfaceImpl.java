@@ -79,4 +79,13 @@ public class SiteDaoInterfaceImpl extends SiteDao implements SiteDaoInterface {
                 .fetch()
                 .into(Site.class);
     }
+
+    @Override
+    public String fetchUrlByID(int site_id) {
+        Record record = dsl.select(SITE.START_URL)
+                .from(SITE)
+                .where(SITE.ID.equal(site_id))
+                .fetchOne();
+        return record == null ? null : record.into(String.class);
+    }
 }
