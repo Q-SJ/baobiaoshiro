@@ -46,10 +46,10 @@ public class BaobiaoorderDaoInterfaceImpl extends BaobiaoorderDao implements Bao
         return record == null ? null : record.into(Baobiaoorder.class);
     }
 
-    @Override
-    public void insert(Baobiaoorder order) {
-        dsl.insertInto(BAOBIAOORDER, BAOBIAOORDER.USERID, BAOBIAOORDER.OUTTRADENO, BAOBIAOORDER.TRADENO, BAOBIAOORDER.AMOUNT, BAOBIAOORDER.TIME, BAOBIAOORDER.STATUS)
-                .values(order.getUserid(), order.getOuttradeno(), order.getTradeno(), order.getAmount(), order.getTime(), order.getStatus())
-                .execute();
-    }
+//    @Override
+//    public void insert(Baobiaoorder order) {
+//        dsl.insertInto(BAOBIAOORDER, BAOBIAOORDER.USERID, BAOBIAOORDER.OUTTRADENO, BAOBIAOORDER.TRADENO, BAOBIAOORDER.AMOUNT, BAOBIAOORDER.TIME, BAOBIAOORDER.STATUS)
+//                .values(order.getUserid(), order.getOuttradeno(), order.getTradeno(), order.getAmount(), order.getTime(), order.getStatus())
+//                .execute();
+//    }
 }

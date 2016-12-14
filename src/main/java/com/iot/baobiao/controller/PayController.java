@@ -24,11 +24,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -304,9 +302,9 @@ public class PayController {
         return map;
     }
 
-    @RequestMapping(value = "/notify", method = RequestMethod.POST)
+    @PostMapping("/notify")
     public String notifyResult(HttpServletRequest request, HttpServletResponse response) {
-        log.debug("收到支付宝异步通知！");
+        log.info("收到支付宝异步通知！");
         Map<String, String> params = new HashMap<String, String>();
 
         Enumeration<String> parameterNames = request.getParameterNames();
@@ -358,7 +356,7 @@ public class PayController {
                 baobiaoorderService.modifyTradeStatus(UNKNOWN_STATE, outtradeno);
             }
             log.info(outtradeno + "订单的状态已经修改为" + status + "。");
-            rabbitTemplate.convertAndSend("pay-success-exchange","pay-success", baobiaoorderService.findOrderByOuttradeno(outtradeno));
+            rabbitTemplate.convertAndSend("pay-success-exchange","pay-success", order);
         } else { //如果验证签名没有通过
             return "failed";
         }
@@ -367,7 +365,21 @@ public class PayController {
 
     @RequestMapping("/testRabbit")
     public void test() {
+//        rabbitTemplate.setConfirmCallback(this);
         Baobiaoorder order = new Baobiaoorder(1, 2, "asjdfj", null, 1.0, LocalDateTime.now(), WAIT_BUYER_PAY, "18939684306");
+//        CorrelationData data1 = new CorrelationData(UUID.randomUUID().toString());
+//        CorrelationData data2 = new CorrelationData(UUID.randomUUID().toString());
+
         rabbitTemplate.convertAndSend("pay-success-exchange","pay-success", order);
     }
+
+//    @Override
+//    public void confirm(CorrelationData correlationData, boolean b, String s) {
+//        log.debug("回调id：" + correlationData);
+//        if (b) {
+//            log.debug("消息处理成功！");
+//        } else {
+//            log.error("消息处理失败：" + s);
+//        }
+//    }
 }

@@ -143,7 +143,7 @@ public class ShiroConfig {
 
         Map<String, String> definitionsMap = new HashMap<String, String>();
         definitionsMap.put("/pay/notify", "anon");
-        definitionsMap.put("/test*", "anon");
+        definitionsMap.put("/pay/testRabbit", "anon");
         definitionsMap.put("/unauthenticated", "anon");
         definitionsMap.put("/login", "anon");
         definitionsMap.put("/verification", "anon");
@@ -151,7 +151,7 @@ public class ShiroConfig {
         definitionsMap.put("/signup", "anon");
         definitionsMap.put("/index.jsp", "anon");
         definitionsMap.put("/", "anon");
-        definitionsMap.put("/pay/**", "authc");
+        definitionsMap.put("/pay/alipay", "authc");
         definitionsMap.put("/admin/**", "authc, roles[admin]");
         definitionsMap.put("/**", "addPrincipal, user");
         shiroFilter.setFilterChainDefinitionMap(definitionsMap);

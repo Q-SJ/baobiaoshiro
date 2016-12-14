@@ -1,10 +1,7 @@
 package com.iot.baobiao.config;
 
 import com.iot.baobiao.rabbitmq.PaySuccessReceiver;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -21,12 +18,15 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitMQConfig {
+
+    private final String QUEUE_NAME = "pay-success-queue-not-durable";
     //    以下配置RabbitMQ消息服务
     @Bean
     public ConnectionFactory rabbitConnectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
+//        connectionFactory.setPublisherConfirms(true);
         return connectionFactory;
     }
 
@@ -34,6 +34,7 @@ public class RabbitMQConfig {
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(rabbitConnectionFactory());
         template.setMessageConverter(jsonMessageConverter());
+        template.setMandatory(true);
         return template;
     }
 
@@ -52,7 +53,7 @@ public class RabbitMQConfig {
 
     @Bean
     Queue queue() {
-        return new Queue("pay-success-queue", false);
+        return new Queue(QUEUE_NAME, false);
     }
 
     @Bean
@@ -72,7 +73,7 @@ public class RabbitMQConfig {
                                              MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(rabbitConnectionFactory);
-        container.setQueueNames("pay-success-queue");
+        container.setQueueNames(QUEUE_NAME);
         container.setMessageListener(listenerAdapter);
         container.setMessageConverter(jsonMessageConverter());
         return container;

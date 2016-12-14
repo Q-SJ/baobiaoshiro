@@ -20,6 +20,6 @@ public class PaySuccessReceiver {
     public void handleMessage(Baobiaoorder order) {
         log.info("收到来自RabbitMQ的消息:" + order.getOuttradeno());
 //        operations.convertAndSend("/topic/pay-result", order);
-        operations.convertAndSendToUser(order.getPhonenum(), "/topic/pay-result", order);
+        operations.convertAndSendToUser(order.getPhonenum(), "/queue/pay-result", order);
     }
 }
