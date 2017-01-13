@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SelfSite extends TableImpl<SelfSiteRecord> {
 
-    private static final long serialVersionUID = 1211730211;
+    private static final long serialVersionUID = 293932846;
 
     /**
      * The reference instance of <code>nutch.self_site</code>
@@ -60,9 +60,14 @@ public class SelfSite extends TableImpl<SelfSiteRecord> {
     public final TableField<SelfSiteRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>nutch.self_site.url</code>.
+     * The column <code>nutch.self_site.position</code>. 地理位置ID
      */
-    public final TableField<SelfSiteRecord, String> URL = createField("url", org.jooq.impl.SQLDataType.VARCHAR.length(1000), this, "");
+    public final TableField<SelfSiteRecord, Integer> POSITION = createField("position", org.jooq.impl.SQLDataType.INTEGER, this, "地理位置ID");
+
+    /**
+     * The column <code>nutch.self_site.url</code>. 信息页面地址
+     */
+    public final TableField<SelfSiteRecord, String> URL = createField("url", org.jooq.impl.SQLDataType.VARCHAR.length(1000), this, "信息页面地址");
 
     /**
      * The column <code>nutch.self_site.code</code>. ʡ
@@ -128,6 +133,21 @@ public class SelfSite extends TableImpl<SelfSiteRecord> {
      * The column <code>nutch.self_site.location</code>.
      */
     public final TableField<SelfSiteRecord, String> LOCATION = createField("location", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
+
+    /**
+     * The column <code>nutch.self_site.description</code>. 摘要
+     */
+    public final TableField<SelfSiteRecord, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR.length(500), this, "摘要");
+
+    /**
+     * The column <code>nutch.self_site.mirror_url</code>. 镜像地址，原页面地址打不开时用
+     */
+    public final TableField<SelfSiteRecord, String> MIRROR_URL = createField("mirror_url", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "镜像地址，原页面地址打不开时用");
+
+    /**
+     * The column <code>nutch.self_site.class_id</code>. 1为招标，2为中标
+     */
+    public final TableField<SelfSiteRecord, Integer> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.INTEGER)), this, "1为招标，2为中标");
 
     /**
      * Create a <code>nutch.self_site</code> table reference

@@ -5,6 +5,7 @@ package com.iot.baobiao.jooq;
 
 
 import com.iot.baobiao.jooq.tables.Baobiaoorder;
+import com.iot.baobiao.jooq.tables.NcArea;
 import com.iot.baobiao.jooq.tables.RolesPermissions;
 import com.iot.baobiao.jooq.tables.SelfSite;
 import com.iot.baobiao.jooq.tables.Site;
@@ -13,6 +14,7 @@ import com.iot.baobiao.jooq.tables.UserRoles;
 import com.iot.baobiao.jooq.tables.UserSite;
 import com.iot.baobiao.jooq.tables.UserSms;
 import com.iot.baobiao.jooq.tables.records.BaobiaoorderRecord;
+import com.iot.baobiao.jooq.tables.records.NcAreaRecord;
 import com.iot.baobiao.jooq.tables.records.RolesPermissionsRecord;
 import com.iot.baobiao.jooq.tables.records.SelfSiteRecord;
 import com.iot.baobiao.jooq.tables.records.SiteRecord;
@@ -61,6 +63,7 @@ public class Keys {
 
     public static final UniqueKey<BaobiaoorderRecord> KEY_BAOBIAOORDER_PRIMARY = UniqueKeys0.KEY_BAOBIAOORDER_PRIMARY;
     public static final UniqueKey<BaobiaoorderRecord> KEY_BAOBIAOORDER_ID_UNIQUE = UniqueKeys0.KEY_BAOBIAOORDER_ID_UNIQUE;
+    public static final UniqueKey<NcAreaRecord> KEY_NC_AREA_PRIMARY = UniqueKeys0.KEY_NC_AREA_PRIMARY;
     public static final UniqueKey<RolesPermissionsRecord> KEY_ROLES_PERMISSIONS_PRIMARY = UniqueKeys0.KEY_ROLES_PERMISSIONS_PRIMARY;
     public static final UniqueKey<RolesPermissionsRecord> KEY_ROLES_PERMISSIONS_ID_UNIQUE = UniqueKeys0.KEY_ROLES_PERMISSIONS_ID_UNIQUE;
     public static final UniqueKey<SelfSiteRecord> KEY_SELF_SITE_PRIMARY = UniqueKeys0.KEY_SELF_SITE_PRIMARY;
@@ -98,6 +101,7 @@ public class Keys {
     private static class UniqueKeys0 extends AbstractKeys {
         public static final UniqueKey<BaobiaoorderRecord> KEY_BAOBIAOORDER_PRIMARY = createUniqueKey(Baobiaoorder.BAOBIAOORDER, "KEY_baobiaoorder_PRIMARY", Baobiaoorder.BAOBIAOORDER.ID);
         public static final UniqueKey<BaobiaoorderRecord> KEY_BAOBIAOORDER_ID_UNIQUE = createUniqueKey(Baobiaoorder.BAOBIAOORDER, "KEY_baobiaoorder_id_UNIQUE", Baobiaoorder.BAOBIAOORDER.ID);
+        public static final UniqueKey<NcAreaRecord> KEY_NC_AREA_PRIMARY = createUniqueKey(NcArea.NC_AREA, "KEY_nc_area_PRIMARY", NcArea.NC_AREA.NC_AREAID);
         public static final UniqueKey<RolesPermissionsRecord> KEY_ROLES_PERMISSIONS_PRIMARY = createUniqueKey(RolesPermissions.ROLES_PERMISSIONS, "KEY_roles_permissions_PRIMARY", RolesPermissions.ROLES_PERMISSIONS.ID);
         public static final UniqueKey<RolesPermissionsRecord> KEY_ROLES_PERMISSIONS_ID_UNIQUE = createUniqueKey(RolesPermissions.ROLES_PERMISSIONS, "KEY_roles_permissions_id_UNIQUE", RolesPermissions.ROLES_PERMISSIONS.ID);
         public static final UniqueKey<SelfSiteRecord> KEY_SELF_SITE_PRIMARY = createUniqueKey(SelfSite.SELF_SITE, "KEY_self_site_PRIMARY", SelfSite.SELF_SITE.ID);

@@ -1,5 +1,6 @@
 package com.iot.baobiao.service;
 
+import com.iot.baobiao.jooq.tables.pojos.NcArea;
 import com.iot.baobiao.jooq.tables.pojos.Site;
 import com.iot.baobiao.jooq.tables.pojos.UserSite;
 
@@ -32,4 +33,8 @@ public interface SiteService {
     String findUrlByID(int site_id);
 
     void modifySite(Site site);
+
+    List<NcArea> fetchArea();
+
+    List<NcArea> fetAreaID(String city);
 }

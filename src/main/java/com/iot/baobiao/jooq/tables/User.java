@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = 1620656232;
+    private static final long serialVersionUID = 279838476;
 
     /**
      * The reference instance of <code>nutch.user</code>
@@ -111,6 +111,21 @@ public class User extends TableImpl<UserRecord> {
      * The column <code>nutch.user.login_time</code>.
      */
     public final TableField<UserRecord, LocalDateTime> LOGIN_TIME = createField("login_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new TimestampToLocalDateTimeConverter());
+
+    /**
+     * The column <code>nutch.user.signup_time</code>.
+     */
+    public final TableField<UserRecord, LocalDateTime> SIGNUP_TIME = createField("signup_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new TimestampToLocalDateTimeConverter());
+
+    /**
+     * The column <code>nutch.user.vip_end_time</code>.
+     */
+    public final TableField<UserRecord, LocalDateTime> VIP_END_TIME = createField("vip_end_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new TimestampToLocalDateTimeConverter());
+
+    /**
+     * The column <code>nutch.user.friend</code>.
+     */
+    public final TableField<UserRecord, String> FRIEND = createField("friend", org.jooq.impl.SQLDataType.VARCHAR.length(15), this, "");
 
     /**
      * Create a <code>nutch.user</code> table reference

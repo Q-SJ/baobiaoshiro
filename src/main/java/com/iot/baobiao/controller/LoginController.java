@@ -2,6 +2,7 @@ package com.iot.baobiao.controller;
 
 import com.iot.baobiao.service.LoginService;
 import com.iot.baobiao.service.LoginServiceImpl;
+import com.iot.baobiao.service.UserService;
 import com.iot.baobiao.util.ErrorReturnMap;
 import com.iot.baobiao.util.OKReturnMap;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +24,9 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping("/unauthenticated")
     public Map<String, Object> unauthenticated() {
         return new ErrorReturnMap("未登录！").getMap();
@@ -41,8 +45,14 @@ public class LoginController {
     @PostMapping("/signup")
     public Map<String, Object> signup(@RequestParam String phonenum,
                                       @RequestParam String password,
-                                      @RequestParam String code) {
-        return loginService.signup(phonenum, password, code);
+                                      @RequestParam String code,
+                                      @RequestParam(required = false) String freind) {
+        return loginService.signup(phonenum, password, code, freind);
+    }
+
+    @PostMapping("/checkUser")
+    public Map<String, Object> signup(@RequestParam String phonenum) {
+        return userService.checkUser(phonenum);
     }
 
     @PostMapping("/login")

@@ -4,6 +4,7 @@ import com.iot.baobiao.jooq.tables.pojos.User;
 import com.iot.baobiao.service.UserService;
 import com.iot.baobiao.util.DataReturnMap;
 import com.iot.baobiao.util.OKReturnMap;
+import com.iot.baobiao.util.factory.UserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,12 +50,13 @@ public class UserController {
     }
 
     @PostMapping("/infoIOS")
-    public Map<String, Object> modifyInfoIOS(HttpSession session, @RequestParam String corporation,
+    public Map<String, Object> modifyInfoIOS(HttpSession session,
+                                             @RequestParam String corporation,
                                              @RequestParam String email,
                                              @RequestParam String username,
                                              @RequestParam int industry) {
         int user_id = (Integer) session.getAttribute("user_id");
-        User user = new User(username, email, corporation, industry);
+        User user = UserFactory.newInstance(username, email, corporation, industry);
         user.setId(user_id);
         userService.modifyInfo(user);
         return new OKReturnMap("信息已修改成功！").getMap();

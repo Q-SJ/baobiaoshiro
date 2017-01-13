@@ -5,6 +5,7 @@ package com.iot.baobiao.jooq;
 
 
 import com.iot.baobiao.jooq.tables.Baobiaoorder;
+import com.iot.baobiao.jooq.tables.NcArea;
 import com.iot.baobiao.jooq.tables.RolesPermissions;
 import com.iot.baobiao.jooq.tables.SelfSite;
 import com.iot.baobiao.jooq.tables.Site;
@@ -33,6 +34,11 @@ public class Tables {
      * The table <code>nutch.baobiaoorder</code>.
      */
     public static final Baobiaoorder BAOBIAOORDER = com.iot.baobiao.jooq.tables.Baobiaoorder.BAOBIAOORDER;
+
+    /**
+     * The table <code>nutch.nc_area</code>.
+     */
+    public static final NcArea NC_AREA = com.iot.baobiao.jooq.tables.NcArea.NC_AREA;
 
     /**
      * The table <code>nutch.roles_permissions</code>.

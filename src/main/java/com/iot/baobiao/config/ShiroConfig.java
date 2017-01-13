@@ -139,20 +139,21 @@ public class ShiroConfig {
         Map<String, Filter> map = new HashMap<>();
         map.put("addPrincipal", addPrincipalToSessionFilter());
         shiroFilter.setFilters(map);
-//        shiroFilter.
 
         Map<String, String> definitionsMap = new HashMap<String, String>();
+//        definitionsMap.put("/", "anon");
+        definitionsMap.put("/index.jsp", "anon");
+        definitionsMap.put("/backstage/**", "anon");
         definitionsMap.put("/pay/notify", "anon");
         definitionsMap.put("/pay/testRabbit", "anon");
+        definitionsMap.put("/pay/alipay", "authc");
         definitionsMap.put("/unauthenticated", "anon");
         definitionsMap.put("/login", "anon");
         definitionsMap.put("/verification", "anon");
         definitionsMap.put("/forgetPassword", "anon");
         definitionsMap.put("/signup", "anon");
-        definitionsMap.put("/index.jsp", "anon");
-        definitionsMap.put("/", "anon");
-        definitionsMap.put("/pay/alipay", "authc");
         definitionsMap.put("/admin/**", "authc, roles[admin]");
+        definitionsMap.put("/site/anon", "anon");
         definitionsMap.put("/**", "addPrincipal, user");
         shiroFilter.setFilterChainDefinitionMap(definitionsMap);
 

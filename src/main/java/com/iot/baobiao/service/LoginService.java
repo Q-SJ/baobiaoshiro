@@ -9,7 +9,7 @@ public interface LoginService {
 
     Map<String, Object> sendMessage(String phonenum);
 
-    Map<String, Object> signup(String phonenum, String password, String code);
+    Map<String, Object> signup(String phonenum, String password, String code, String friend);
 
     Map<String, Object> login(String phonenum, String password, boolean askForSites);
 

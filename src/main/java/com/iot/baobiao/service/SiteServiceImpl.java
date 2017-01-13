@@ -1,9 +1,11 @@
 package com.iot.baobiao.service;
 
+import com.iot.baobiao.dao.NcAreaDaoInterface;
 import com.iot.baobiao.dao.SiteDaoInterface;
 import com.iot.baobiao.dao.UserDaoInterface;
 import com.iot.baobiao.dao.UserSiteDaoInterface;
 import com.iot.baobiao.exception.DuplicateSiteException;
+import com.iot.baobiao.jooq.tables.pojos.NcArea;
 import com.iot.baobiao.jooq.tables.pojos.Site;
 import com.iot.baobiao.jooq.tables.pojos.UserSite;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,9 @@ public class SiteServiceImpl implements SiteService {
 
     @Autowired
     private UserSiteDaoInterface userSiteDaoInterface;
+
+    @Autowired
+    private NcAreaDaoInterface ncAreaDaoInterface;
 
     public int addUserSite(int user_id, Map<String, String> args) {
         String domain = (String) args.get("domain");
@@ -119,6 +124,16 @@ public class SiteServiceImpl implements SiteService {
     @Override
     public void modifySite(Site site) {
         siteDaoInterface.update(site);
+    }
+
+    @Override
+    public List<NcArea> fetchArea() {
+        return ncAreaDaoInterface.fetchArea();
+    }
+
+    @Override
+    public List<NcArea> fetAreaID(String city) {
+        return ncAreaDaoInterface.fetAreaID(city);
     }
 
 }

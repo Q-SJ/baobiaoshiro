@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -1845060490;
+    private static final long serialVersionUID = -395999998;
 
     private Integer       id;
     private String        phonenum;
@@ -37,15 +37,11 @@ public class User implements Serializable {
     private String        salt;
     private Integer       vip;
     private LocalDateTime loginTime;
+    private LocalDateTime signupTime;
+    private LocalDateTime vipEndTime;
+    private String        friend;
 
     public User() {}
-
-    public User(String username, String email, String corporation, Integer industry) {
-        this.username = username;
-        this.email = email;
-        this.corporation = corporation;
-        this.industry = industry;
-    }
 
     public User(User value) {
         this.id = value.id;
@@ -60,6 +56,9 @@ public class User implements Serializable {
         this.salt = value.salt;
         this.vip = value.vip;
         this.loginTime = value.loginTime;
+        this.signupTime = value.signupTime;
+        this.vipEndTime = value.vipEndTime;
+        this.friend = value.friend;
     }
 
     public User(
@@ -74,7 +73,10 @@ public class User implements Serializable {
         String        keyword,
         String        salt,
         Integer       vip,
-        LocalDateTime loginTime
+        LocalDateTime loginTime,
+        LocalDateTime signupTime,
+        LocalDateTime vipEndTime,
+        String        friend
     ) {
         this.id = id;
         this.phonenum = phonenum;
@@ -88,6 +90,9 @@ public class User implements Serializable {
         this.salt = salt;
         this.vip = vip;
         this.loginTime = loginTime;
+        this.signupTime = signupTime;
+        this.vipEndTime = vipEndTime;
+        this.friend = friend;
     }
 
     public Integer getId() {
@@ -186,6 +191,30 @@ public class User implements Serializable {
         this.loginTime = loginTime;
     }
 
+    public LocalDateTime getSignupTime() {
+        return this.signupTime;
+    }
+
+    public void setSignupTime(LocalDateTime signupTime) {
+        this.signupTime = signupTime;
+    }
+
+    public LocalDateTime getVipEndTime() {
+        return this.vipEndTime;
+    }
+
+    public void setVipEndTime(LocalDateTime vipEndTime) {
+        this.vipEndTime = vipEndTime;
+    }
+
+    public String getFriend() {
+        return this.friend;
+    }
+
+    public void setFriend(String friend) {
+        this.friend = friend;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("User (");
@@ -202,6 +231,9 @@ public class User implements Serializable {
         sb.append(", ").append(salt);
         sb.append(", ").append(vip);
         sb.append(", ").append(loginTime);
+        sb.append(", ").append(signupTime);
+        sb.append(", ").append(vipEndTime);
+        sb.append(", ").append(friend);
 
         sb.append(")");
         return sb.toString();

@@ -2,6 +2,8 @@ package com.iot.baobiao.config;
 
 import com.iot.baobiao.exception.JOOQToSpringExceptionTranslator;
 import com.iot.baobiao.executelistener.LoggingExecuteListener;
+import com.iot.baobiao.pojo.Discount;
+import com.iot.baobiao.pojo.VipInfo;
 import org.apache.commons.httpclient.HttpClient;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
@@ -110,4 +112,24 @@ public class RootConfig {
 //    public LoggingExecuteListener loggingExecuteListener(SQLDialect dialect) {
 //        return new LoggingExecuteListener(dialect);
 //    }
+
+    //配置活动的Bean
+    @Bean
+    public Discount discount() {
+        Discount discount = new Discount();
+        discount.setName("无活动");
+        discount.setDescription("");
+        discount.setPrice(0);
+        discount.setNum(0);
+        discount.setBeginTime(null);
+        discount.setEndTime(null);
+        return discount;
+    }
+
+    @Bean
+    public VipInfo vipInfo() {
+        VipInfo info = new VipInfo();
+        info.setDays(30);
+        return info;
+    }
 }

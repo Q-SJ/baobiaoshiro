@@ -152,4 +152,25 @@ public class UserDao extends DAOImpl<UserRecord, com.iot.baobiao.jooq.tables.poj
     public List<com.iot.baobiao.jooq.tables.pojos.User> fetchByLoginTime(LocalDateTime... values) {
         return fetch(User.USER.LOGIN_TIME, values);
     }
+
+    /**
+     * Fetch records that have <code>signup_time IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.User> fetchBySignupTime(LocalDateTime... values) {
+        return fetch(User.USER.SIGNUP_TIME, values);
+    }
+
+    /**
+     * Fetch records that have <code>vip_end_time IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.User> fetchByVipEndTime(LocalDateTime... values) {
+        return fetch(User.USER.VIP_END_TIME, values);
+    }
+
+    /**
+     * Fetch records that have <code>friend IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.User> fetchByFriend(String... values) {
+        return fetch(User.USER.FRIEND, values);
+    }
 }

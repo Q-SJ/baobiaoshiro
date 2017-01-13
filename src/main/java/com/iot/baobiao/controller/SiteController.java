@@ -74,6 +74,9 @@ public class SiteController {
     @PostMapping("/data")
     public Map<String, Object> fetch_data(HttpSession session,
                                           @RequestParam(required = false, defaultValue = "-1") int data_id,
+                                          @RequestParam(required = false) String time,
+                                          @RequestParam(required = false, defaultValue = "-1") int location,
+                                          @RequestParam(required = false) String city,
                                           @RequestParam String words,
                                           @RequestParam(required = false, defaultValue = "true") boolean own,
                                           @RequestParam(required = false) String fromTime) {
@@ -88,7 +91,18 @@ public class SiteController {
 //
 //        DateTime time = timestamp == -1 ? null : new DateTime(timestamp);
 
-        return new DataReturnMap("data", dataService.fetchData(ids, data_id, wordList, fromTime, own)).getMap();
+        return new DataReturnMap("data", dataService.fetchData(ids, data_id, time, location, city, wordList, fromTime, own)).getMap();
+    }
+
+    @PostMapping("/anon")
+    public Map<String, Object> fetch_data_anon(@RequestParam(required = false, defaultValue = "-1") int data_id,
+                                               @RequestParam(required = false) String time,
+                                               @RequestParam(required = false, defaultValue = "-1") int location,
+                                               @RequestParam(required = false) String city,
+                                               @RequestParam String words,
+                                               @RequestParam(required = false) String fromTime) {
+        List<String> wordList = Arrays.asList(words.split(","));
+        return new DataReturnMap("data", dataService.fetchDataAnon(data_id, time, location, city, wordList, fromTime)).getMap();
     }
 
     @RequestMapping("/domains")
@@ -96,4 +110,13 @@ public class SiteController {
         return new DataReturnMap("domains", siteService.queryDomainList()).getMap();
     }
 
+    @PostMapping("/area")
+    public Map<String, Object> fetchArea() {
+        return new DataReturnMap("area", siteService.fetchArea()).getMap();
+    }
+
+    @PostMapping("/getAreaID")
+    public Map<String, Object> fetchAreaID(@RequestParam String city) {
+        return new DataReturnMap("area", siteService.fetAreaID(city)).getMap();
+    }
 }

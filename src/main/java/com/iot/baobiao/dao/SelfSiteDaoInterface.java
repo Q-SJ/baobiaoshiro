@@ -9,9 +9,11 @@ import java.util.List;
  */
 public interface SelfSiteDaoInterface {
 
-    List<SelfSite> findData(List<Integer> ids, int self_site_id, List<String> wordList, String time, boolean own);
+    List<SelfSite> findData(List<Integer> ids, int data_id, String time, int location, String city, List<String> wordList, String fromTime, boolean own);
 
     List<SelfSite> findDataBySite(int site_id, int self_site_id);
 
     void insert(SelfSite selfSite);
+
+    List<SelfSite> findDataAnon(int data_id, String time, int location, String city, List<String> wordList, String fromTime);
 }

@@ -72,6 +72,13 @@ public class SelfSiteDao extends DAOImpl<SelfSiteRecord, com.iot.baobiao.jooq.ta
     }
 
     /**
+     * Fetch records that have <code>position IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.SelfSite> fetchByPosition(Integer... values) {
+        return fetch(SelfSite.SELF_SITE.POSITION, values);
+    }
+
+    /**
      * Fetch records that have <code>url IN (values)</code>
      */
     public List<com.iot.baobiao.jooq.tables.pojos.SelfSite> fetchByUrl(String... values) {
@@ -167,5 +174,26 @@ public class SelfSiteDao extends DAOImpl<SelfSiteRecord, com.iot.baobiao.jooq.ta
      */
     public List<com.iot.baobiao.jooq.tables.pojos.SelfSite> fetchByLocation(String... values) {
         return fetch(SelfSite.SELF_SITE.LOCATION, values);
+    }
+
+    /**
+     * Fetch records that have <code>description IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.SelfSite> fetchByDescription(String... values) {
+        return fetch(SelfSite.SELF_SITE.DESCRIPTION, values);
+    }
+
+    /**
+     * Fetch records that have <code>mirror_url IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.SelfSite> fetchByMirrorUrl(String... values) {
+        return fetch(SelfSite.SELF_SITE.MIRROR_URL, values);
+    }
+
+    /**
+     * Fetch records that have <code>class_id IN (values)</code>
+     */
+    public List<com.iot.baobiao.jooq.tables.pojos.SelfSite> fetchByClassId(Integer... values) {
+        return fetch(SelfSite.SELF_SITE.CLASS_ID, values);
     }
 }

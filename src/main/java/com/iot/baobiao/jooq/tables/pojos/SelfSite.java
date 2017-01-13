@@ -25,9 +25,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SelfSite implements Serializable {
 
-    private static final long serialVersionUID = -1700776968;
+    private static final long serialVersionUID = -666971950;
 
     private Integer       id;
+    private Integer       position;
     private String        url;
     private String        code;
     private String        name;
@@ -42,11 +43,15 @@ public class SelfSite implements Serializable {
     private String        domain;
     private Integer       urlId;
     private String        location;
+    private String        description;
+    private String        mirrorUrl;
+    private Integer       classId;
 
     public SelfSite() {}
 
     public SelfSite(SelfSite value) {
         this.id = value.id;
+        this.position = value.position;
         this.url = value.url;
         this.code = value.code;
         this.name = value.name;
@@ -61,10 +66,14 @@ public class SelfSite implements Serializable {
         this.domain = value.domain;
         this.urlId = value.urlId;
         this.location = value.location;
+        this.description = value.description;
+        this.mirrorUrl = value.mirrorUrl;
+        this.classId = value.classId;
     }
 
     public SelfSite(
         Integer       id,
+        Integer       position,
         String        url,
         String        code,
         String        name,
@@ -78,9 +87,13 @@ public class SelfSite implements Serializable {
         String        serverNum,
         String        domain,
         Integer       urlId,
-        String        location
+        String        location,
+        String        description,
+        String        mirrorUrl,
+        Integer       classId
     ) {
         this.id = id;
+        this.position = position;
         this.url = url;
         this.code = code;
         this.name = name;
@@ -95,6 +108,9 @@ public class SelfSite implements Serializable {
         this.domain = domain;
         this.urlId = urlId;
         this.location = location;
+        this.description = description;
+        this.mirrorUrl = mirrorUrl;
+        this.classId = classId;
     }
 
     public Integer getId() {
@@ -103,6 +119,14 @@ public class SelfSite implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public String getUrl() {
@@ -217,11 +241,36 @@ public class SelfSite implements Serializable {
         this.location = location;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMirrorUrl() {
+        return this.mirrorUrl;
+    }
+
+    public void setMirrorUrl(String mirrorUrl) {
+        this.mirrorUrl = mirrorUrl;
+    }
+
+    public Integer getClassId() {
+        return this.classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("SelfSite (");
 
         sb.append(id);
+        sb.append(", ").append(position);
         sb.append(", ").append(url);
         sb.append(", ").append(code);
         sb.append(", ").append(name);
@@ -236,6 +285,9 @@ public class SelfSite implements Serializable {
         sb.append(", ").append(domain);
         sb.append(", ").append(urlId);
         sb.append(", ").append(location);
+        sb.append(", ").append(description);
+        sb.append(", ").append(mirrorUrl);
+        sb.append(", ").append(classId);
 
         sb.append(")");
         return sb.toString();

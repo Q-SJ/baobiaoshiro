@@ -5,6 +5,7 @@ package com.iot.baobiao.jooq;
 
 
 import com.iot.baobiao.jooq.tables.Baobiaoorder;
+import com.iot.baobiao.jooq.tables.NcArea;
 import com.iot.baobiao.jooq.tables.RolesPermissions;
 import com.iot.baobiao.jooq.tables.SelfSite;
 import com.iot.baobiao.jooq.tables.Site;
@@ -37,7 +38,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Nutch extends SchemaImpl {
 
-    private static final long serialVersionUID = -756503957;
+    private static final long serialVersionUID = 806119552;
 
     /**
      * The reference instance of <code>nutch</code>
@@ -48,6 +49,11 @@ public class Nutch extends SchemaImpl {
      * The table <code>nutch.baobiaoorder</code>.
      */
     public final Baobiaoorder BAOBIAOORDER = com.iot.baobiao.jooq.tables.Baobiaoorder.BAOBIAOORDER;
+
+    /**
+     * The table <code>nutch.nc_area</code>.
+     */
+    public final NcArea NC_AREA = com.iot.baobiao.jooq.tables.NcArea.NC_AREA;
 
     /**
      * The table <code>nutch.roles_permissions</code>.
@@ -110,6 +116,7 @@ public class Nutch extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Baobiaoorder.BAOBIAOORDER,
+            NcArea.NC_AREA,
             RolesPermissions.ROLES_PERMISSIONS,
             SelfSite.SELF_SITE,
             Site.SITE,

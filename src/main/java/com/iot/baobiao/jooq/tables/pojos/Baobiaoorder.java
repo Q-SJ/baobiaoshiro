@@ -4,11 +4,6 @@
 package com.iot.baobiao.jooq.tables.pojos;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -35,8 +30,6 @@ public class Baobiaoorder implements Serializable {
     private String        outtradeno;
     private String        tradeno;
     private Double        amount;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime time;
     private Integer       status;
     private String        phonenum;

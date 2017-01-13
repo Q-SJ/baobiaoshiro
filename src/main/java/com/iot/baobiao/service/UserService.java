@@ -4,10 +4,13 @@ import com.iot.baobiao.dao.UserDaoInterface;
 import com.iot.baobiao.dao.UserSiteDaoInterface;
 import com.iot.baobiao.jooq.tables.pojos.User;
 import com.iot.baobiao.jooq.tables.pojos.UserSite;
+import com.iot.baobiao.util.ErrorReturnMap;
+import com.iot.baobiao.util.OKReturnMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ja on 2016/6/30.
@@ -44,5 +47,13 @@ public class UserService {
 
     public void modifyInfo(User user) {
         userDaoInterface.updateInfo(user);
+    }
+
+    public Map<String, Object> checkUser(String phonenum) {
+        if (userDaoInterface.fetchOneByPhonenum(phonenum) != null) {
+            return new ErrorReturnMap("该用户已存在！").getMap();
+        } else {
+            return new OKReturnMap("该手机号尚未注册！").getMap();
+        }
     }
 }

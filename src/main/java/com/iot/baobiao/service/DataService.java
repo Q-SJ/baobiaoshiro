@@ -19,13 +19,25 @@ public class DataService {
 
     public List<SelfSite> fetchData(List<Integer> ids,
                                     int data_id,
-                                    List<String> wordList,
                                     String time,
+                                    int location,
+                                    String city,
+                                    List<String> wordList,
+                                    String fromTime,
                                     boolean own) {
-        return selfSiteDaoInterface.findData(ids, data_id, wordList, time, own);
+        return selfSiteDaoInterface.findData(ids, data_id, time, location, city, wordList, fromTime, own);
     }
 
     public List<SelfSite> findDataBySite(int site_id, int data_id) {
         return selfSiteDaoInterface.findDataBySite(site_id, data_id);
+    }
+
+    public List<SelfSite> fetchDataAnon(int data_id,
+                                        String time,
+                                        int location,
+                                        String city,
+                                        List<String> wordList,
+                                        String fromTime) {
+        return selfSiteDaoInterface.findDataAnon(data_id, time, location, city, wordList, fromTime);
     }
 }

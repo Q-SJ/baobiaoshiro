@@ -1,9 +1,6 @@
 package com.iot.baobiao.service;
 
-import com.iot.baobiao.dao.UserDaoInterface;
-import com.iot.baobiao.dao.UserRolesDaoInterface;
-import com.iot.baobiao.dao.UserSiteDaoInterface;
-import com.iot.baobiao.dao.UserSmsDaoInterface;
+import com.iot.baobiao.dao.*;
 import com.iot.baobiao.jooq.tables.pojos.User;
 import com.iot.baobiao.jooq.tables.pojos.UserSms;
 import com.iot.baobiao.shiro.MySQLRealm;
@@ -27,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,12 +37,6 @@ import java.util.regex.Pattern;
 @Transactional
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
-    RandomNumberGenerator rng;
-
-    @Autowired
-    private MySQLRealm mySQLRelam;
-
     private Logger logger = Logger.getLogger(this.getClass());
 
     private String algorithmName = "md5";
@@ -54,6 +46,12 @@ public class LoginServiceImpl implements LoginService {
     private static HttpClient httpClient = new HttpClient();
 
     private static Pattern pattern = Pattern.compile("returnstatus>Success");
+
+    @Autowired
+    RandomNumberGenerator rng;
+
+    @Autowired
+    private MySQLRealm mySQLRelam;
 
     @Autowired
     UserDaoInterface userDaoInterface;
@@ -69,6 +67,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     UserRolesDaoInterface userRolesDaoInterface;
+
+    @Autowired
+    PropertiesDao propertiesDao;
 
     private static String getSignCode() {
         StringBuilder builder = new StringBuilder();
@@ -113,7 +114,10 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Map<String, Object> signup(String phonenum, String password, String code) {
+    public Map<String, Object> signup(String phonenum,
+                                      String password,
+                                      String code,
+                                      String friend) {
         User user = userDaoInterface.fetchOneByPhonenum(phonenum);
         //如果用户数据库里面已经有这个手机号
         if (user != null) return new ErrorReturnMap("该手机号已经注册，请登录！").getMap();
@@ -128,11 +132,19 @@ public class LoginServiceImpl implements LoginService {
 
         user = new User();
         user.setPhonenum(phonenum);
+
+        if (friend != null) {
+            user.setFriend(friend);
+        }
+
         String salt = rng.nextBytes().toBase64();
         user.setSalt(salt);
         user.setPassword(new SimpleHash(algorithmName, password, salt, hashIterations).toBase64());
+        user.setSignupTime(LocalDateTime.now());
         user.setLoginTime(LocalDateTime.now());
         user.setVip(1);
+
+        user.setVipEndTime(LocalDateTime.now().plusDays(propertiesDao.getTrialDays()));
         int user_id = userDaoInterface.insertUserAndGetID(user);
 
         Subject currentUser = SecurityUtils.getSubject();

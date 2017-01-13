@@ -1,10 +1,7 @@
 package com.iot.baobiao.controller;
 
 import com.iot.baobiao.jooq.tables.pojos.Site;
-import com.iot.baobiao.service.DataService;
-import com.iot.baobiao.service.LoginService;
-import com.iot.baobiao.service.SiteService;
-import com.iot.baobiao.service.UserService;
+import com.iot.baobiao.service.*;
 import com.iot.baobiao.util.DataReturnMap;
 import com.iot.baobiao.util.ErrorReturnMap;
 import com.iot.baobiao.util.OKReturnMap;
@@ -29,7 +26,7 @@ import java.util.Map;
 @RequiresRoles("admin")
 public class AdminController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     SiteService siteService;
@@ -43,12 +40,22 @@ public class AdminController {
     @Autowired
     DataService dataService;
 
+    @Autowired
+    PropertiesService propertiesService;
+
     @PostMapping("/grant")
     @RequiresRoles("superadmin")
     public Map<String, Object> grant(@RequestParam int user_id, @RequestParam String role, HttpSession session) {
         logger.info("管理员" + session.getAttribute("phonenum") + "正在授予用户" + user_id + "管理员权限...");
         loginService.grant(user_id, role);
         return new OKReturnMap("已授予用户" + user_id + role + "角色！").getMap();
+    }
+
+    //设置用户注册后试用时间
+    public Map<String, Object> setTrialDays(@RequestParam int day, HttpSession session) {
+        propertiesService.updateTrialDays(day);
+        logger.info("管理员" + session.getAttribute("phonenum") + "把试用时间设置成了" + day + "天！");
+        return new OKReturnMap("修改试用欺限成功！").getMap();
     }
 
     //以下为用户管理
